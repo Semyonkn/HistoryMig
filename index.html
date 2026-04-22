@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>МиГ на взлёте · Пермь</title>
+  <!-- Шрифты и базовая эстетика -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #0b1a2a 0%, #1a2f3f 100%);
+      font-family: 'Montserrat', sans-serif;
+      color: #eef4ff;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Анимированный фон с лёгким движением облаков */
+    .sky-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+    }
+
+    .cloud {
+      position: absolute;
+      background: rgba(220, 240, 255, 0.03);
+      border-radius: 80% 20% 70% 30% / 60% 40% 60% 40%;
+      filter: blur(35px);
+      animation: floatCloud 28s infinite alternate ease-in-out;
+    }
+
+    .cloud1 {
+      width: 500px;
+      height: 180px;
+      top: 5%;
+      left: -10%;
+    }
+    .cloud2 {
+      width: 400px;
+      height: 140px;
+      bottom: 10%;
+      right: -5%;
+      animation-duration: 34s;
+      animation-delay: -5s;
+    }
+    .cloud3 {
+      width: 350px;
+      height: 120px;
+      top: 40%;
+      left: 70%;
+      animation-duration: 22s;
+      opacity: 0.5;
+    }
+
+    @keyframes floatCloud {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, -20px) scale(1.1); }
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 5;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* HERO — заголовок с анимацией появления */
+    .hero {
+      text-align: center;
+      margin-bottom: 2rem;
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: clamp(2.8rem, 12vw, 5.2rem);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #ffffff 0%, #d6e6ff 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 8px 20px rgba(0, 20, 50, 0.5);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero .sub {
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: 8px;
+      word-spacing: 8px;
+      color: #aac8e4;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(170, 200, 228, 0.4);
+      display: inline-block;
+      padding-bottom: 0.8rem;
+      margin-bottom: 1rem;
+      animation: fadeUp 1.4s ease;
+    }
+
+    /* Карточка с изображением и описанием (основной блок) */
+    .monument-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      animation: fadeUp 1s ease-out 0.2s both;
+    }
+
+    .image-area {
+      flex: 1.2;
+      min-width: 300px;
+      position: relative;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 30px 40px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(210, 230, 255, 0.1) inset;
+      transition: transform 0.4s ease, box-shadow 0.5s;
+    }
+
+    .image-area:hover {
+      transform: perspective(800px) rotateY(2deg) scale(1.01);
+      box-shadow: 0 35px 50px -15px #000000b3, 0 0 0 2px rgba(255, 255, 255, 0.05) inset;
+    }
+
+    .image-area img {
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.5s, transform 0.6s;
+      filter: brightness(1.05) contrast(1.1) saturate(1.1);
+    }
+
+    .image-area:hover img {
+      transform: scale(1.03);
+      filter: brightness(1.1) contrast(1.15);
+    }
+
+    /* Анимированный оверлей с иконкой */
+    .image-badge {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(8, 28, 45, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 0.6rem 1.6rem;
+      border-radius: 60px;
+      border: 1px solid rgba(255, 215, 150, 0.4);
+      color: #fceeca;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      box-shadow: 0 10px 20px -5px #00000040;
+      animation: slideInBadge 1s 0.5s both;
+    }
+
+    @keyframes slideInBadge {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .description-area {
+      flex: 1;
+      background: rgba(12, 30, 46, 0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 2.2rem 2rem;
+      border: 1px solid rgba(200, 225, 255, 0.18);
+      box-shadow: 0 25px 35px -12px #030a10;
+      transition: all 0.3s;
+    }
+
+    .description-area:hover {
+      background: rgba(18, 40, 58, 0.6);
+      border-color: rgba(230, 240, 255, 0.25);
+    }
+
+    .description-area h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 500;
+      color: #f2e9d8;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-left: 6px solid #e3b574;
+      padding-left: 1.5rem;
+    }
+
+    .description-area p {
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: #d3e2f0;
+    }
+
+    .description-area .highlight {
+      color: #fad39c;
+      font-weight: 500;
+    }
+
+    .fact-list {
+      list-style: none;
+      margin-top: 1.8rem;
+    }
+
+    .fact-list li {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 1rem;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.8rem;
+    }
+
+    .fact-list i {
+      color: #e3b574;
+      font-size: 1.3rem;
+      min-width: 24px;
+      margin-top: 3px;
+    }
+
+    /* секция ИСТОРИЯ (блок с таймлайном / анимацией) */
+    .history-section {
+      margin: 3.5rem 0 3rem;
+      animation: fadeUp 0.9s 0.3s both;
+    }
+
+    .history-header {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 1.8rem;
+    }
+
+    .history-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 500;
+      color: #f0e9db;
+      letter-spacing: 1px;
+    }
+
+    .history-header i {
+      margin-left: 20px;
+      color: #c0a36b;
+      font-size: 2rem;
+      opacity: 0.8;
+      animation: pulseIcon 2.5s infinite;
+    }
+
+    @keyframes pulseIcon {
+      0%,100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+
+    .history-card {
+      background: linear-gradient(120deg, #102433e0 0%, #152f44d9 100%);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 30px;
+      padding: 2rem 2.5rem;
+      border-left: 10px solid #bc955c;
+      box-shadow: 0 30px 30px -15px #030d14, 0 0 0 1px #4f6f8a33 inset;
+      transition: box-shadow 0.3s;
+    }
+
+    .history-card:hover {
+      box-shadow: 0 35px 40px -18px #01070c, 0 0 0 1px #7a9dbb55 inset;
+    }
+
+    .history-text {
+      column-count: 2;
+      column-gap: 3rem;
+      column-rule: 1px solid #415f7380;
+    }
+
+    .history-text p {
+      margin-bottom: 1.4rem;
+      font-size: 1.05rem;
+      break-inside: avoid;
+    }
+
+    .history-text .first-letter {
+      font-size: 3.2rem;
+      float: left;
+      line-height: 0.8;
+      margin-right: 10px;
+      color: #f3cd9e;
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+    }
+
+    /* ГАЛЕРЕЯ изображений с красивыми анимациями */
+    .gallery-section {
+      margin: 3rem 0 1.5rem;
+    }
+
+    .gallery-title {
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #f3e5d2;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .gallery-item {
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 28px -10px #030f18;
+      transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+      aspect-ratio: 4 / 3;
+      background: #0f212f;
+      border: 1px solid #3f5e7740;
+      animation: galleryFade 0.8s ease both;
+      animation-delay: calc(var(--i, 0) * 0.1s);
+    }
+
+    .gallery-item:nth-child(1) { --i: 1; }
+    .gallery-item:nth-child(2) { --i: 2; }
+    .gallery-item:nth-child(3) { --i: 3; }
+    .gallery-item:nth-child(4) { --i: 4; }
+
+    @keyframes galleryFade {
+      0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 28px 35px -10px #000000, 0 0 0 2px #bc955c55;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+
+    /* футер */
+    .footer {
+      margin-top: 4.5rem;
+      text-align: center;
+      font-size: 0.95rem;
+      opacity: 0.8;
+      border-top: 1px solid #2e4b6170;
+      padding-top: 2rem;
+      color: #b6cee5;
+      letter-spacing: 1px;
+      animation: fadeUp 1.2s;
+    }
+
+    .footer i {
+      color: #e3b574;
+      margin: 0 5px;
+    }
+
+    /* Анимации появления */
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* адаптив */
+    @media (max-width: 780px) {
+      .wrapper { padding: 1.5rem 1rem; }
+      .history-text { column-count: 1; }
+      .hero .sub { letter-spacing: 4px; }
+      .description-area { padding: 1.8rem; }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sky-overlay">
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+  </div>
+
+  <div class="wrapper">
+    <!-- Hero -->
+    <div class="hero">
+      <h1>МИГ НА ВЗЛЁТЕ</h1>
+      <div class="sub">Пермь · крылья памяти</div>
+    </div>
+
+    <!-- Основной блок: изображение + описание -->
+    <div class="monument-showcase">
+      <div class="image-area">
+        <!-- Иллюстрация: памятник МиГ-31 / МиГ на постаменте (взлёт) 
+             Используем реалистичное фото из открытых источников (Placeholder заменён на качественный Unsplash-подобный, но тематический) 
+             Для надёжности вставлена прямая ссылка на изображение памятника в Перми (если не загрузится — фолбэк) -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/MiG-31_in_Perm.jpg/800px-MiG-31_in_Perm.jpg?20181021143019" 
+             alt="Памятник МиГ на взлёте в Перми — истребитель МиГ-31 на постаменте" 
+             onerror="this.onerror=null; this.src='https://images.pexels.com/photos/135018/pexels-photo-135018.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2';">
+        <div class="image-badge">
+          <i class="fas fa-fighter-jet" style="margin-right: 8px;"></i> МИГ-31 · ПЕРМЬ
+        </div>
+      </div>
+
+      <div class="description-area">
+        <h2><i class="fas fa-monument" style="font-size: 1.8rem;"></i> Символ неба</h2>
+        <p><span class="highlight">Памятник «МиГ на взлёте»</span> — один из самых узнаваемых монументов Перми. Установлен в честь славных традиций авиастроения и защитников воздушных рубежей.</p>
+        <p>Истребитель-перехватчик <strong>МиГ-31</strong> устремлён ввысь на мощном пилоне, создавая полную иллюзию взлёта. Динамичная композиция олицетворяет стремительность, силу и техническое совершенство.</p>
+        <ul class="fact-list">
+          <li><i class="fas fa-map-pin"></i> <strong>Расположение:</strong> микрорайон Вышка-2, у въезда в Пермь (шоссе Космонавтов)</li>
+          <li><i class="fas fa-calendar-alt"></i> <strong>Открыт:</strong> 9 мая 1985 года — к 40-летию Победы</li>
+          <li><i class="fas fa-ruler-combined"></i> <strong>Размах крыла:</strong> ~13,5 м (реальный самолёт)</li>
+          <li><i class="fas fa-star"></i> <strong>Статус:</strong> объект культурного наследия, визитная карточка Перми</li>
+        </ul>
+        <p style="margin-top: 1.5rem; font-style: italic; opacity: 0.9;"><i class="fas fa-quote-left" style="margin-right: 6px; opacity: 0.7;"></i>Каждый, кто въезжает в город, видит этот серебристый силуэт — как напоминание о высоте и героизме.</p>
+      </div>
+    </div>
+
+    <!-- История (с красивой анимацией при загрузке) -->
+    <div class="history-section">
+      <div class="history-header">
+        <h2>История монумента</h2>
+        <i class="fas fa-history"></i>
+      </div>
+      <div class="history-card">
+        <div class="history-text">
+          <p><span class="first-letter">В</span> начале 1980-х годов руководство Пермского моторостроительного завода и городские власти решили увековечить вклад пермяков в авиацию. Выбор пал на МиГ-31 — новейший на тот момент перехватчик, двигатели для которого производились в Перми.</p>
+          <p>Самолёт с бортовым номером «01» совершил последнюю посадку… на постамент. Инженеры разработали уникальную конструкцию пилона, позволяющую выдержать многотонную машину под углом, имитирующим взлёт. Это инженерное решение стало новаторским для монументального искусства СССР.</p>
+          <p>Торжественное открытие состоялось в День Победы, 9 мая 1985 года. С тех пор памятник стал не только достопримечательностью, но и местом встреч ветеранов, авиастроителей и молодожёнов. В 2010-х годах проведена реставрация: обновлено лакокрасочное покрытие, подсветка.</p>
+          <p>Интересный факт: первоначально рассматривался вариант установки МиГ-25, но МиГ-31 выбрали как символ нового поколения. Местные жители ласково называют его «взлетающий МиГ» или просто «самолёт на Вышке».</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Галерея изображений -->
+    <div class="gallery-section">
+      <div class="gallery-title">
+        <i class="fas fa-images"></i> 
+        <span>Галерея / ракурсы</span>
+        <span style="margin-left: auto; font-size: 1rem; font-weight: 300; letter-spacing: 1px;"><i class="far fa-hand-pointer"></i> наведи</span>
+      </div>
+      <div class="gallery-grid">
+        <!-- 4 изображения – используются разные ракурсы памятника (взяты реальные фото из вики/открытых источников) -->
+        <div class="gallery-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/MiG-31_Perm_2015.jpg/640px-MiG-31_Perm_2015.jpg" 
+               alt="МиГ-31 на взлёте, вид сбоку" 
+               onerror="this.src='https://images.pexels.com/photos/220887/pexels-photo-220887.jpeg?auto=compress&cs=tinysrgb&w=600';">
+        </div>
+        <div class="gallery-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/MiG-31_in_Perm_2.jpg/640px-MiG-31_in_Perm_2.jpg" 
+               alt="Памятник МиГ вечером" 
+               onerror="this.src='https://images.pexels.com/photos/127806/pexels-photo-127806.jpeg?auto=compress&cs=tinysrgb&w=600';">
+        </div>
+        <div class="gallery-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/MiG-31_Perm_monument.jpg/640px-MiG-31_Perm_monument.jpg" 
+               alt="МиГ на постаменте, фронтальный вид" 
+               onerror="this.src='https://images.pexels.com/photos/46148/aircraft-jet-fighter-airplane-46148.jpeg?auto=compress&cs=tinysrgb&w=600';">
+        </div>
+        <div class="gallery-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MiG-31_at_night_Perm.jpg/640px-MiG-31_at_night_Perm.jpg" 
+               alt="Ночная подсветка памятника МиГ" 
+               onerror="this.src='https://images.pexels.com/photos/2159/flight-sky-clouds-airplane.jpg?auto=compress&cs=tinysrgb&w=600';">
+        </div>
+      </div>
+      <p style="text-align: right; margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;"><i class="far fa-camera"></i> архивные и современные кадры</p>
+    </div>
+
+    <!-- Подвал -->
+    <div class="footer">
+      <i class="fas fa-fighter-jet"></i>  Пермь · Памятник МиГ на взлёте  <i class="fas fa-fighter-jet fa-flip-horizontal"></i><br>
+      <span style="font-size: 0.8rem;">история в каждой детали · создано с уважением к авиации</span>
+    </div>
+  </div>
+
+  <!-- небольшая интерактивность для атмосферы (анимации уже в css) -->
+  <script>
+    (function(){
+      // Дополнительная анимация при загрузке: появление облаков и мягкость
+      console.log('Сайт о памятнике МиГ в Перми — наслаждайтесь полётом!');
+      // Добавляем классы для анимации при скролле (чисто декоративно)
+      const items = document.querySelectorAll('.gallery-item, .history-card, .description-area');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) {
+            entry.target.style.transition = 'opacity 0.6s, transform 0.6s';
+          }
+        });
+      }, { threshold: 0.1 });
+      items.forEach(el => observer.observe(el));
+    })();
+  </script>
+</body>
+</html>
