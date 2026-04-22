@@ -9,6 +9,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Slick Carousel CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+  
   <style>
     * {
       margin: 0;
@@ -406,12 +411,12 @@
       text-shadow: 0 0 15px #fabc60;
     }
 
-    /* === ГАЛЕРЕЯ С УСИЛЕННЫМИ АНИМАЦИЯМИ === */
-    .gallery-section {
+    /* === SLICK СЛАЙДЕР НА 8 ФОТО === */
+    .slider-section {
       margin: 3.5rem 0 1.5rem;
     }
 
-    .gallery-title {
+    .slider-title {
       font-size: 2.4rem;
       margin-bottom: 2.2rem;
       font-weight: 600;
@@ -421,7 +426,7 @@
       color: #f5e7d9;
     }
 
-    .gallery-title i {
+    .slider-title i {
       animation: wobble 4s infinite;
     }
 
@@ -431,13 +436,17 @@
       75% { transform: rotate(-4deg); }
     }
 
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
+    /* Контейнер слайдера */
+    .slick-container {
+      margin: 0 -10px; /* Компенсируем отступы слайдов */
     }
 
-    .gallery-item {
+    /* Стили для слайдов */
+    .slick-slide {
+      padding: 0 10px;
+    }
+
+    .slide-item {
       border-radius: 28px;
       overflow: hidden;
       box-shadow: 0 25px 35px -12px #020b12;
@@ -445,28 +454,17 @@
       aspect-ratio: 4 / 3;
       background: #0f212f;
       border: 1px solid #40658055;
-      animation: galleryFade 0.8s ease both;
-      animation-delay: calc(var(--i, 0) * 0.15s);
-      transform: translateY(0);
+      transform: scale(0.95);
+      transition: transform 0.4s ease, box-shadow 0.4s;
+      cursor: pointer;
     }
 
-    .gallery-item:nth-child(1) { --i: 1; }
-    .gallery-item:nth-child(2) { --i: 2; }
-    .gallery-item:nth-child(3) { --i: 3; }
-    .gallery-item:nth-child(4) { --i: 4; }
-
-    @keyframes galleryFade {
-      0% { opacity: 0; transform: translateY(50px) scale(0.9) rotate(1deg); }
-      100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
-    }
-
-    .gallery-item:hover {
-      transform: translateY(-15px) scale(1.03);
+    .slide-item:hover {
+      transform: scale(1.02);
       box-shadow: 0 35px 45px -10px #000, 0 0 0 3px #e3b57499;
-      transition: all 0.3s;
     }
 
-    .gallery-item img {
+    .slide-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -474,17 +472,135 @@
       transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.3, 1);
     }
 
-    .gallery-item:hover img {
-      transform: scale(1.15) rotate(0.5deg);
+    .slide-item:hover img {
+      transform: scale(1.1);
     }
 
-    /* Анимированная подпись галереи */
-    .gallery-caption {
+    /* Кастомные стрелки Slick */
+    .slick-prev, .slick-next {
+      width: 50px;
+      height: 50px;
+      background: rgba(10, 30, 50, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 50%;
+      border: 1px solid rgba(227, 181, 116, 0.5);
+      z-index: 20;
+      transition: all 0.3s;
+    }
+
+    .slick-prev:hover, .slick-next:hover {
+      background: rgba(30, 60, 90, 0.9);
+      border-color: #e3b574;
+      box-shadow: 0 0 20px #e3b57480;
+    }
+
+    .slick-prev:before, .slick-next:before {
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      font-size: 24px;
+      color: #fad39c;
+      opacity: 1;
+    }
+
+    .slick-prev:before {
+      content: '\f104'; /* fa-chevron-left */
+    }
+
+    .slick-next:before {
+      content: '\f105'; /* fa-chevron-right */
+    }
+
+    .slick-prev {
+      left: -25px;
+    }
+
+    .slick-next {
+      right: -25px;
+    }
+
+    /* Точки (dots) */
+    .slick-dots {
+      bottom: -40px;
+    }
+
+    .slick-dots li {
+      margin: 0 6px;
+    }
+
+    .slick-dots li button:before {
+      font-size: 12px;
+      color: #aac8e4;
+      opacity: 0.5;
+      transition: all 0.3s;
+    }
+
+    .slick-dots li.slick-active button:before {
+      color: #e3b574;
+      opacity: 1;
+      text-shadow: 0 0 10px #fad39c;
+    }
+
+    .slick-dots li button:hover:before {
+      color: #fad39c;
+      opacity: 0.8;
+    }
+
+    /* Анимированная подпись */
+    .slider-caption {
       text-align: right;
       margin-top: 1.2rem;
       font-size: 1rem;
       opacity: 0.8;
       animation: fadeUp 1.2s;
+    }
+
+    /* Карта */
+    .map-section {
+      margin: 3.5rem 0 1.5rem;
+    }
+
+    .map-title {
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #f3e5d2;
+    }
+
+    .map-container {
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 30px 40px -15px #000000, 0 0 0 1px rgba(210, 230, 255, 0.1) inset;
+      border: 1px solid #40658055;
+      height: 350px;
+      width: 100%;
+    }
+
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .map-link {
+      margin-top: 1rem;
+      text-align: right;
+    }
+
+    .map-link a {
+      color: #bedcf5;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .map-link a:hover {
+      color: #fad39c;
     }
 
     /* Футер с движением */
@@ -531,6 +647,13 @@
     @media (max-width: 800px) {
       .history-text { column-count: 1; }
       .wrapper { padding: 1.5rem; }
+      .slick-prev { left: -15px; }
+      .slick-next { right: -15px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 2.5rem; }
+      .slick-prev, .slick-next { width: 40px; height: 40px; }
     }
   </style>
 </head>
@@ -571,11 +694,11 @@
         <h2><i class="fas fa-monument"></i> Крылья над Камой</h2>
 <p><span class="highlight">Памятник «МиГ на взлёте»</span> — один из самых узнаваемых монументов Перми, ставший визитной карточкой города. Он не просто украшает ландшафт, а воплощает мощь и устремлённость авиационной истории.</p>
 <p>Реальный истребитель-перехватчик <strong>МиГ-31</strong> закреплён на мощном пилоне под углом, создавая иллюзию взлёта. Кажется, ещё мгновение — и он с рёвом уйдёт в небо.</p>
-          <li><i class="fas fa-map-pin"></i> <strong>Место:</strong> город Пермь, улица Чкалова, 36(Сквер Субботина)</li>
         <ul class="fact-list">
+          <li><i class="fas fa-map-pin"></i> <strong>Место:</strong> город Пермь, улица Чкалова, 36 (Сквер Субботина)</li>
           <li><i class="fas fa-calendar-alt"></i> <strong>Открытие:</strong> 6 июня 2014</li>
-          <li><i class="fas fa-microchip"></i> <strong>Факт:</strong> Двигатели МиГ-31(Д-30Ф6) производились в Перми</li>
-          <li><i class="fas fa-star"></i> <strong>Статус:</strong> Одна из визитных карточек города, мемориал, не является объектом культурного наследия ЮНЕСКО</li>
+          <li><i class="fas fa-microchip"></i> <strong>Факт:</strong> Двигатели МиГ-31 (Д-30Ф6) производились в Перми</li>
+          <li><i class="fas fa-star"></i> <strong>Статус:</strong> Одна из визитных карточек города, мемориал</li>
         </ul>
         <p style="margin-top: 1.8rem; font-style: italic;"><i class="fas fa-quote-left" style="margin-right: 8px;"></i>Серебристая стрела, навечно застывшая в порыве.</p>
       </div>
@@ -596,37 +719,71 @@
       </div>
     </div>
 
-    <!-- Галерея с живыми эффектами -->
-    <div class="gallery-section">
-      <div class="gallery-title">
-        <i class="fas fa-camera-retro"></i> 
-        <span>Ракурсы мощи</span>
-        <span style="margin-left: auto; font-size: 1rem; opacity: 0.8;"><i class="fas fa-arrows-alt"></i> наведи — оживёт</span>
+    <!-- SLICK СЛАЙДЕР НА 8 ФОТО -->
+    <div class="slider-section">
+      <div class="slider-title">
+        <i class="fas fa-images"></i> 
+        <span>Галерея памяти</span>
+        <span style="margin-left: auto; font-size: 1rem; opacity: 0.8;"><i class="fas fa-arrows-alt"></i> листай — смотри</span>
       </div>
-      <div class="gallery-grid">
-        <div class="gallery-item">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/MiG-31_Perm_2015.jpg/640px-MiG-31_Perm_2015.jpg" 
-               alt="МиГ-31 вид сбоку" 
-               onerror="this.src='https://images.pexels.com/photos/220887/pexels-photo-220887.jpeg?auto=compress&cs=tinysrgb&w=600';">
+      
+      <div class="slick-container" id="slick-slider">
+        <!-- Слайд 1 -->
+        <div class="slide-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/MiG-31_in_Perm.jpg/800px-MiG-31_in_Perm.jpg?20181021143019" alt="МиГ-31 в Перми" onerror="this.src='https://images.pexels.com/photos/135018/pexels-photo-135018.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2';">
         </div>
-        <div class="gallery-item">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/MiG-31_in_Perm_2.jpg/640px-MiG-31_in_Perm_2.jpg" 
-               alt="Вечерний МиГ" 
-               onerror="this.src='https://images.pexels.com/photos/127806/pexels-photo-127806.jpeg?auto=compress&cs=tinysrgb&w=600';">
+        <!-- Слайд 2 -->
+        <div class="slide-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/MiG-31_Perm_2015.jpg/640px-MiG-31_Perm_2015.jpg" alt="МиГ-31 вид сбоку" onerror="this.src='https://images.pexels.com/photos/220887/pexels-photo-220887.jpeg?auto=compress&cs=tinysrgb&w=600';">
         </div>
-        <div class="gallery-item">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/MiG-31_Perm_monument.jpg/640px-MiG-31_Perm_monument.jpg" 
-               alt="Фронтальный вид" 
-               onerror="this.src='https://images.pexels.com/photos/46148/aircraft-jet-fighter-airplane-46148.jpeg?auto=compress&cs=tinysrgb&w=600';">
+        <!-- Слайд 3 -->
+        <div class="slide-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/MiG-31_in_Perm_2.jpg/640px-MiG-31_in_Perm_2.jpg" alt="Вечерний МиГ" onerror="this.src='https://images.pexels.com/photos/127806/pexels-photo-127806.jpeg?auto=compress&cs=tinysrgb&w=600';">
         </div>
-        <div class="gallery-item">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MiG-31_at_night_Perm.jpg/640px-MiG-31_at_night_Perm.jpg" 
-               alt="Ночная подсветка" 
-               onerror="this.src='https://images.pexels.com/photos/2159/flight-sky-clouds-airplane.jpg?auto=compress&cs=tinysrgb&w=600';">
+        <!-- Слайд 4 -->
+        <div class="slide-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/MiG-31_Perm_monument.jpg/640px-MiG-31_Perm_monument.jpg" alt="Фронтальный вид" onerror="this.src='https://images.pexels.com/photos/46148/aircraft-jet-fighter-airplane-46148.jpeg?auto=compress&cs=tinysrgb&w=600';">
+        </div>
+        <!-- Слайд 5 -->
+        <div class="slide-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MiG-31_at_night_Perm.jpg/640px-MiG-31_at_night_Perm.jpg" alt="Ночная подсветка" onerror="this.src='https://images.pexels.com/photos/2159/flight-sky-clouds-airplane.jpg?auto=compress&cs=tinysrgb&w=600';">
+        </div>
+        <!-- Слайд 6 -->
+        <div class="slide-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/MiG-31_in_Perm.jpg/800px-MiG-31_in_Perm.jpg?20181021143019" alt="Памятник МиГ-31 крупным планом" onerror="this.src='https://images.pexels.com/photos/135018/pexels-photo-135018.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2';">
+        </div>
+        <!-- Слайд 7 -->
+        <div class="slide-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/MiG-31_Perm_2015.jpg/640px-MiG-31_Perm_2015.jpg" alt="МиГ-31 с другого ракурса" onerror="this.src='https://images.pexels.com/photos/220887/pexels-photo-220887.jpeg?auto=compress&cs=tinysrgb&w=600';">
+        </div>
+        <!-- Слайд 8 -->
+        <div class="slide-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/MiG-31_in_Perm_2.jpg/640px-MiG-31_in_Perm_2.jpg" alt="МиГ-31 вечерняя подсветка" onerror="this.src='https://images.pexels.com/photos/127806/pexels-photo-127806.jpeg?auto=compress&cs=tinysrgb&w=600';">
         </div>
       </div>
-      <div class="gallery-caption">
-        <i class="far fa-images"></i> Фотографии, сделанные лично мной
+      
+      <div class="slider-caption">
+        <i class="far fa-images"></i> 8 уникальных кадров легендарного монумента
+      </div>
+    </div>
+
+    <!-- Карта с местоположением -->
+    <div class="map-section">
+      <div class="map-title">
+        <i class="fas fa-map-marked-alt"></i>
+        <span>Место на карте</span>
+      </div>
+      <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d844.5465783667157!2d56.24224526965085!3d58.00645421645522!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x43e8c7428d4f6b9b%3A0x5e2a2b8b7f8c0f1a!2z0YPQuy4g0KfQutCw0LvQvtCy0LAsIDM2LCDQn9C10YDQvNGMLCDQn9C10YDQvNGB0LrQuNC5INC60YDQsNC5LCA2MTQwMDA!5e0!3m2!1sru!2sru!4v1715170000000!5m2!1sru!2sru" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <div class="map-link">
+        <a href="https://maps.google.com/?q=58.006454,56.242245" target="_blank">
+          <i class="fas fa-external-link-alt"></i> Открыть в Google Картах
+        </a>
       </div>
     </div>
 
@@ -637,11 +794,48 @@
     </div>
   </div>
 
-  <!-- JavaScript для параллакса и дополнительной динамики -->
+  <!-- jQuery (необходим для Slick) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Slick Carousel JS -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+  <!-- JavaScript для параллакса, облаков, искр и инициализации слайдера -->
   <script>
-    (function(){
+    (function($){
       "use strict";
       
+      // Инициализация Slick слайдера
+      $(document).ready(function(){
+        $('#slick-slider').slick({
+          dots: true,                // Показывать точки-индикаторы
+          infinite: true,            // Бесконечная прокрутка
+          speed: 600,                // Скорость анимации
+          slidesToShow: 3,           // Показывать по 3 слайда
+          slidesToScroll: 1,         // Прокручивать по 1 слайду
+          autoplay: true,            // Автопрокрутка
+          autoplaySpeed: 3000,       // Пауза 3 секунды
+          pauseOnHover: true,        // Пауза при наведении
+          arrows: true,              // Показывать стрелки
+          centerMode: false,         // Не центрировать
+          responsive: [
+            {
+              breakpoint: 1024,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1
+              }
+            },
+            {
+              breakpoint: 600,
+              settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+              }
+            }
+          ]
+        });
+      });
+
       // 1. Параллакс-эффект для изображения (реакция на мышь)
       const container = document.getElementById('parallaxContainer');
       const imageArea = document.getElementById('parallaxImage');
@@ -649,17 +843,15 @@
       if(container && imageArea) {
         container.addEventListener('mousemove', function(e) {
           const rect = container.getBoundingClientRect();
-          const x = e.clientX - rect.left;  // позиция мыши внутри контейнера
+          const x = e.clientX - rect.left;
           const y = e.clientY - rect.top;
           
           const centerX = rect.width / 2;
           const centerY = rect.height / 2;
           
-          // вычисляем смещение (от -1 до 1)
           const moveX = (x - centerX) / centerX;
           const moveY = (y - centerY) / centerY;
           
-          // поворот и небольшое смещение картинки (максимум 8 градусов)
           const rotateY = moveX * 6;  
           const rotateX = -moveY * 5; 
           
@@ -675,7 +867,7 @@
         });
       }
       
-      // 2. Добавим небольшую "реакцию" на скролл для фоновых облаков (динамическая прозрачность)
+      // 2. Реакция облаков на скролл
       window.addEventListener('scroll', function() {
         const scrolled = window.pageYOffset;
         const clouds = document.querySelectorAll('.cloud');
@@ -685,7 +877,7 @@
         });
       });
 
-      // 3. Анимация мигания искр (уже в css, но добавим случайное мерцание)
+      // 3. Анимация мигания искр
       const sparkles = document.querySelectorAll('.sparkle');
       setInterval(() => {
         sparkles.forEach(s => {
@@ -693,7 +885,9 @@
           s.style.transform = `translateY(${Math.random() * 30 - 15}px) translateX(${Math.random() * 30 - 15}px)`;
         });
       }, 2000);
-    })();
+      
+      console.log('✈️ МиГ в движении — слайдер на 8 фото активирован!');
+    })(jQuery);
   </script>
 </body>
 </html>
